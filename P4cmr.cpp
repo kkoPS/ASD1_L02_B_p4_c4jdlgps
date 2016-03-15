@@ -90,6 +90,16 @@ bool P4cmr::isValidMove(size_t c) const
       return false;
    }
    
+   for(unsigned i = 0; i < m_rows ; i++)
+   {
+      if(m_board[i][c] != Player::EMPTY)
+      {
+         return false;
+      }
+   }
+   
+   return true;
+   
    
    
 }

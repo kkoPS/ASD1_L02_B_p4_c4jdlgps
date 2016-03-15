@@ -7,6 +7,8 @@
 
 #include "P4cmr.h"
 
+using namespace std;
+
 std::ostream& operator << ( std::ostream&, const P4cmr& );
 
 // A COMPLETER SELON VOS BESOINS EN ATTRIBUTS ET METHODES PRIVEES
@@ -20,23 +22,34 @@ std::ostream& operator << ( std::ostream&, const P4cmr& );
  *  @brief Constructeur par defaut
  */
 P4cmr::P4cmr()
+: m_rows(6), m_cols(7), m_name("BRO4")
 {
-   
+   m_board.resize(m_rows);
+   for(unsigned i = 0; i < m_rows ; i ++)
+   {
+      m_board[i].resize(m_cols);
+      for(unsigned j = 0 ; j < m_cols ; j++)
+      {
+         m_board[i][j] = Player::EMPTY;
+      }
+   }
 }
 
-
-P4cmr::P4cmr(const P4cmr& orig) {
-}
-
-P4cmr::~P4cmr() {
-}
 
 /**
  *  @brief Remet à zèro les attributs pour jouer une nouvelle partie
  */
 void P4cmr::reset()
 {
-   
+   m_board.resize(m_rows);
+   for(unsigned i = 0; i < m_rows ; i ++)
+   {
+      m_board[i].resize(m_cols);
+      for(unsigned j = 0 ; j < m_cols ; j++)
+      {
+         m_board[i][j] = Player::EMPTY;
+      }
+   }
 }
 
 /**
@@ -72,6 +85,12 @@ bool P4cmr::isWinner(Player p) const
  */
 bool P4cmr::isValidMove(size_t c) const
 {
+   if(m_cols < c)
+   {
+      return false;
+   }
+   
+   
    
 }
 
@@ -99,10 +118,47 @@ size_t P4cmr::chooseNextMove(Player p, unsigned depth)
  */
 std::string P4cmr::getName() const
 {
-   
+   string truncated = m_name.substr(5);
+   return truncated;
 }
 
 
+
+void P4cmr::printBoard(std::ostream& flow) const
+{
+   string ligne = string( m_cols*2, '_');
+   //flow << "afficher le plateau : " << endl;
+   
+   for(unsigned i = 0 ; i < m_rows ; i++)
+   {
+      //flow << ligne << endl;
+      for(unsigned j = 0 ; j < m_cols ; j++)
+      {
+         flow << "|";
+         if(m_board[i][j] == Player::EMPTY)
+         {
+            flow << "_";
+         }
+         else if(m_board[i][j] == Player::O)
+         {
+            flow << "o";
+         }
+         else if(m_board[i][j] == Player::X)
+         {
+            flow << "x";
+         }
+         
+      }
+      flow << "|" << endl;
+   }
+   
+   flow << endl;
+}
+
+void P4cmr::play(size_t r, size_t c, const Player& p)
+{
+   this->m_board[m_rows - r][c - 1] = p;
+}
 
 
 
@@ -115,9 +171,10 @@ std::string P4cmr::getName() const
 *
 *  @return le flux original
 */
-std::ostream& operator << ( std::ostream&, const P4cmr& )
+std::ostream& operator << ( std::ostream& flow, const P4cmr& b)
 {
-   
+   b.printBoard(flow);
+   return flow;
 }
 
 

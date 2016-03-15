@@ -3,6 +3,10 @@
 
 #include "P4Interface.h"
 #include <ostream>
+#include <vector>
+
+
+typedef std::vector<std::vector<Player>> Board;
 
 class P4cmr : public P4Interface
 {
@@ -19,10 +23,6 @@ public:
     *  @brief Constructeur par defaut
     */
    P4cmr();
-
-   P4cmr(const P4cmr& orig);
-
-   ~P4cmr();
     
    /**
     *  @brief Remet à zèro les attributs pour jouer une nouvelle partie
@@ -76,6 +76,18 @@ public:
     *          pour ne garder que les 4 premieres lettres
     */
    std::string getName() const;
+   
+   void printBoard(std::ostream& flow) const;
+   
+   //debug
+   void play(size_t r, size_t c, const Player& p);
+   
+   
+   private:
+      size_t m_rows;
+      size_t m_cols;
+      Board m_board;
+      std::string m_name;
 };
 
 /**

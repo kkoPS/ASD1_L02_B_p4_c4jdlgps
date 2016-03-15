@@ -7,7 +7,7 @@
 
 #include "P4cmr.h"
 
-friend std::ostream& operator << ( std::ostream&, const P4cmr& );
+std::ostream& operator << ( std::ostream&, const P4cmr& );
 
 // A COMPLETER SELON VOS BESOINS EN ATTRIBUTS ET METHODES PRIVEES
 
@@ -19,7 +19,10 @@ friend std::ostream& operator << ( std::ostream&, const P4cmr& );
 /**
  *  @brief Constructeur par defaut
  */
-P4cmr::P4cmr();
+P4cmr::P4cmr()
+{
+   
+}
 
 
 P4cmr::P4cmr(const P4cmr& orig) {
@@ -31,7 +34,10 @@ P4cmr::~P4cmr() {
 /**
  *  @brief Remet à zèro les attributs pour jouer une nouvelle partie
  */
-void P4cmr::reset();
+void P4cmr::reset()
+{
+   
+}
 
 /**
  *  @brief Le joueur p joue dans la colonne c.
@@ -39,7 +45,10 @@ void P4cmr::reset();
  *  @param c Le numero de colonne entre 0 et 6
  *  @param p Le joueur X ou O
  */
-void P4cmr::playInColumn(size_t c, Player p);
+void P4cmr::playInColumn(size_t c, Player p)
+{
+   
+}
 
 /**
  *  @brief Verifie si le joueur p gagne
@@ -48,7 +57,10 @@ void P4cmr::playInColumn(size_t c, Player p);
  *
  *  @return vrai si 4 a la suite pour p, faux sinon
  */
-bool P4cmr::isWinner(Player p) const;
+bool P4cmr::isWinner(Player p) const
+{
+   
+}
 
 /**
  *  @brief Verifie si jouer dans la colonne c est valide
@@ -58,7 +70,10 @@ bool P4cmr::isWinner(Player p) const;
  *  @return vrai si c est entre 0 et 6 et que la 
  *          colonne n'est pas pleine. Faux sinon
  */
-bool P4cmr::isValidMove(size_t c) const;
+bool P4cmr::isValidMove(size_t c) const
+{
+   
+}
 
 /**
  *  @brief Choisit la prochain mouvement pour le joueur p
@@ -71,7 +86,10 @@ bool P4cmr::isValidMove(size_t c) const;
  *          typiquement calcule avec une variante a 
  *          choix de l'algorithme minimax
  */
-size_t P4cmr::chooseNextMove(Player p, unsigned depth);
+size_t P4cmr::chooseNextMove(Player p, unsigned depth)
+{
+   
+}
 
 /**
  *  @brief Renvoie le nom de votre classe pour le tournoi
@@ -79,7 +97,10 @@ size_t P4cmr::chooseNextMove(Player p, unsigned depth);
  *  @return Un nom qui sera typiquement tronque a l'affichage
  *          pour ne garder que les 4 premieres lettres
  */
-std::string P4cmr::getName() const;
+std::string P4cmr::getName() const
+{
+   
+}
 
 
 
@@ -94,7 +115,10 @@ std::string P4cmr::getName() const;
 *
 *  @return le flux original
 */
-std::ostream& operator << ( std::ostream&, const P4cmr& );
+std::ostream& operator << ( std::ostream&, const P4cmr& )
+{
+   
+}
 
 
 

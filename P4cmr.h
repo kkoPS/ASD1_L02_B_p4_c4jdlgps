@@ -80,7 +80,7 @@ public:
    void printBoard(std::ostream& flow) const;
    
    //debug
-   void play(size_t r, size_t c, const Player& p);
+   void play(size_t c, size_t r, const Player& p);
    
    
    private:

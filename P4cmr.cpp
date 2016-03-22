@@ -24,11 +24,11 @@ std::ostream& operator << ( std::ostream&, const P4cmr& );
 P4cmr::P4cmr()
 : m_rows(6), m_cols(7), m_name("BRO4")
 {
-   m_board.resize(m_rows);
-   for(unsigned i = 0; i < m_rows ; i ++)
+   m_board.resize(m_cols);
+   for(unsigned i = 0; i < m_cols ; i ++)
    {
-      m_board[i].resize(m_cols);
-      for(unsigned j = 0 ; j < m_cols ; j++)
+      m_board[i].resize(m_rows);
+      for(unsigned j = 0 ; j < m_rows ; j++)
       {
          m_board[i][j] = Player::EMPTY;
       }
@@ -41,13 +41,11 @@ P4cmr::P4cmr()
  */
 void P4cmr::reset()
 {
-   m_board.resize(m_rows);
-   for(unsigned i = 0; i < m_rows ; i ++)
+   for(auto&  col : m_board)
    {
-      m_board[i].resize(m_cols);
-      for(unsigned j = 0 ; j < m_cols ; j++)
+      for(auto& square : col)
       {
-         m_board[i][j] = Player::EMPTY;
+         square = Player::EMPTY;
       }
    }
 }
@@ -60,7 +58,14 @@ void P4cmr::reset()
  */
 void P4cmr::playInColumn(size_t c, Player p)
 {
-   
+   for(unsigned r = 0; r < m_rows ; r++)
+   {
+      if(m_board[c][r] == Player::EMPTY)
+      {
+         m_board[c][r] = p;
+         break;
+      }
+   }
 }
 
 /**
@@ -72,6 +77,8 @@ void P4cmr::playInColumn(size_t c, Player p)
  */
 bool P4cmr::isWinner(Player p) const
 {
+   // parcours de bas en haut, par dimension (horizontal, diagonales, )
+   
    
 }
 
@@ -89,19 +96,8 @@ bool P4cmr::isValidMove(size_t c) const
    {
       return false;
    }
-   
-   for(unsigned i = 0; i < m_rows ; i++)
-   {
-      if(m_board[i][c] != Player::EMPTY)
-      {
-         return false;
-      }
-   }
-   
-   return true;
-   
-   
-   
+   // suffisant de tester la case du haut
+   return m_board[c][m_rows - 1] == Player::EMPTY; 
 }
 
 /**
@@ -137,23 +133,22 @@ std::string P4cmr::getName() const
 void P4cmr::printBoard(std::ostream& flow) const
 {
    string ligne = string( m_cols*2, '_');
-   //flow << "afficher le plateau : " << endl;
    
-   for(unsigned i = 0 ; i < m_rows ; i++)
+   for(int i = m_rows -1  ; i >= 0 ; i--)
    {
       //flow << ligne << endl;
       for(unsigned j = 0 ; j < m_cols ; j++)
       {
          flow << "|";
-         if(m_board[i][j] == Player::EMPTY)
+         if(m_board[j][i] == Player::EMPTY)
          {
             flow << "_";
          }
-         else if(m_board[i][j] == Player::O)
+         else if(m_board[j][i] == Player::O)
          {
             flow << "o";
          }
-         else if(m_board[i][j] == Player::X)
+         else if(m_board[j][i] == Player::X)
          {
             flow << "x";
          }
@@ -165,9 +160,11 @@ void P4cmr::printBoard(std::ostream& flow) const
    flow << endl;
 }
 
-void P4cmr::play(size_t r, size_t c, const Player& p)
+
+// to delete
+void P4cmr::play(size_t c, size_t r, const Player& p)
 {
-   this->m_board[m_rows - r][c - 1] = p;
+   this->m_board[c][r] = p;
 }
 
 

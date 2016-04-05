@@ -86,6 +86,10 @@ public:
    private:
       size_t m_rows;
       size_t m_cols;
+      
+      /*
+       Au format [colonne (gauche->droite)][ligne(bas -> haut)]
+       */
       Board m_board;
       std::string m_name;
 };

@@ -79,7 +79,101 @@ bool P4cmr::isWinner(Player p) const
 {
    // parcours de bas en haut, par dimension (horizontal, diagonales, )
    
+   //Par direction
    
+   //--Horizontal
+   for(unsigned r = 0; r < m_rows; r++)
+   {
+      for(unsigned c = 0; c < m_cols - 3; c++)
+      {
+         bool isWinner = true;
+         //Si c'est pas la couleur du Player, pas pris en compte
+         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            if(m_board[c + x][r] != p) //La case n'est pas gagnante
+            {
+               isWinner = false;
+               break;
+            }
+         }
+         if(isWinner)
+         {
+            return true; //Aucune case sauté -> toute les cases au joueur
+         }
+      }
+   } 
+   
+   //--Vertical
+   for(unsigned r = 0; r < m_rows - 3; r++)
+   {
+      for(unsigned c = 0; c < m_cols; c++)
+      {
+         bool isWinner = true;
+         //Si c'est pas la couleur du Player, pas pris en compte
+         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            if(m_board[c][r + x] != p) //La case n'est pas gagnante
+            {
+               isWinner = false;
+               break;
+            }
+         }
+         if(isWinner)
+         {
+            return true; //Aucune case sauté -> toute les cases au joueur
+         }
+      }
+   }
+   
+   
+
+   //Diagonale NE
+   for(unsigned r = 0; r < m_rows - 3; r++)
+   {
+      for(unsigned c = 0; c < m_cols - 3; c++)
+      {
+         bool isWinner = true;
+         //Si c'est pas la couleur du Player, pas pris en compte
+         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            if(m_board[c + x][r + x] != p) //La case n'est pas gagnante
+            {
+               isWinner = false;
+               //cout << "ON break en " << c << ", " << r << +"("+ x+")";
+               break;
+            }
+         }
+         if(isWinner)
+         {
+            return true; //Aucune case sauté -> toute les cases au joueur
+         }
+      }
+   }
+   
+   
+   //Diagonale NO
+   for(unsigned r = 0; r < m_rows - 3; r++)
+   {
+      for(unsigned c = 3; c < m_cols; c++)
+      {
+         bool isWinner = true;
+         //Si c'est pas la couleur du Player, pas pris en compte
+         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            if(m_board[c - x][r + x] != p) //La case n'est pas gagnante
+            {
+               isWinner = false;
+               break;
+            }
+         }
+         if(isWinner)
+         {
+            return true; //Aucune case sauté -> toute les cases au joueur
+         }
+      }
+   }
+   
+   return false;
 }
 
 /**

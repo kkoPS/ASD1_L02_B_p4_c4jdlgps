@@ -207,7 +207,13 @@ bool P4cmr::isValidMove(size_t c) const
  */
 size_t P4cmr::chooseNextMove(Player p, unsigned depth)
 {
-   
+   unsigned x = rand() % 7;
+   while(!isValidMove(x))
+   {
+      x = rand() % 7;
+   }
+      
+   return x;
 }
 
 /**
@@ -223,11 +229,11 @@ std::string P4cmr::getName() const
 }
 
 
-
 void P4cmr::printBoard(std::ostream& flow) const
 {
-   string ligne = string( m_cols*2, '_');
+   string ligne = string( m_cols * 2, '_');
    
+   //Affichage de la grille
    for(int i = m_rows -1  ; i >= 0 ; i--)
    {
       //flow << ligne << endl;
@@ -251,6 +257,13 @@ void P4cmr::printBoard(std::ostream& flow) const
       flow << "|" << endl;
    }
    
+   
+   //Affichage du choix
+   flow << " ";
+   for(unsigned x = 1; x <= m_cols; x++)
+   {
+      flow << x << " ";
+   }
    flow << endl;
 }
 

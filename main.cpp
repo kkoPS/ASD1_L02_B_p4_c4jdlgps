@@ -20,11 +20,13 @@ int main(int argc, char** argv) {
    
    P4cmr board;
 
-   board.playInColumn(3, X);
    board.playInColumn(3, O);
-      board.playInColumn(3, X);
  
-
+   
+   board.play(4, 1, X);   
+   board.play(3, 2, O);
+   board.play(2, 3, X);
+   board.play(1, 4, X);
    
    //   board.play(0,0,X);
 //   board.play(0,2,O);
@@ -39,7 +41,7 @@ int main(int argc, char** argv) {
    board.printBoard(cout);
    
    cout << boolalpha << 
-           board.isValidMove(3) << endl;
+           board.isWinner(X) << endl;
 
    return 0;
 }

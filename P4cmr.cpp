@@ -17,10 +17,6 @@ std::ostream& operator << ( std::ostream&, const P4cmr& );
 // A COMPLETER SELON VOS BESOINS EN ATTRIBUTS ET METHODES PRIVEES
 
 
-// NE PAS MODIFIER L'INTERFACE PUBLIC.
-// IMPLEMENTER LES METHODES SEPAREMENT
-// DANS UN FICHIER .CPP
-
 /**
  *  @brief Constructeur par defaut
  */
@@ -79,10 +75,8 @@ void P4cmr::playInColumn(size_t c, Player p)
  *  @return vrai si 4 a la suite pour p, faux sinon
  */
 bool P4cmr::isWinner(Player p) const
-{
-   // parcours de bas en haut, par dimension (horizontal, diagonales, )
-   
-   //Par direction
+{   
+   //Par direction---
    
    //--Horizontal
    for(unsigned r = 0; r < m_rows; r++)
@@ -197,7 +191,6 @@ bool P4cmr::isValidMove(size_t c) const
    return m_board[c][m_rows - 1] == Player::EMPTY; 
 }
 
-#include <iostream>
 
 /**
  *  @brief Choisit la prochain mouvement pour le joueur p
@@ -241,7 +234,6 @@ size_t P4cmr::chooseNextMove(Player p, unsigned depth)
    }
    
    return columnSelected;
-   
 }
 
 bool P4cmr::isBoardFull()
@@ -290,8 +282,7 @@ int P4cmr::calculScore(size_t col, Player p, size_t depth)
    
    unplayInColumn(col);
    
-   return score;
-   
+   return score;   
 }
 
 

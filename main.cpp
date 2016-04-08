@@ -135,30 +135,6 @@ int main()
 
    return EXIT_SUCCESS;
 
-   
-   /*
-   p4Game.playInColumn(3, O);
- 
-   
-   p4Game.play(4, 1, X);   
-   p4Game.play(3, 2, O);
-   p4Game.play(2, 3, X);
-   p4Game.play(1, 4, X);
-   
-   //   board.play(0,0,X);
-//   board.play(0,2,O);
-//   board.play(0,1,O);
-//   board.play(0,4,X);
-//   board.play(0,3,O);
-//   board.play(0,5,X);
-//   board.play(2,1,X);
-//   board.play(5,1,O);
-//   board.play(6,1,X);
-   
-   p4Game.printBoard(cout);
-   
-   cout << boolalpha << 
-           p4Game.isWinner(X) << endl;*/
 
 }
 

@@ -92,6 +92,11 @@ public:
        */
       Board m_board;
       std::string m_name;
+      
+      int evalBoard(Player p);
+      int calculScore(size_t col, Player p, size_t depth);
+      bool isBoardFull();
+      void unplayInColumn(size_t c);
 };
 
 /**

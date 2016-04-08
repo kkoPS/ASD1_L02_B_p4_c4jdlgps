@@ -78,6 +78,9 @@ int askNumberOfPlayers() {
 
 int main() 
 {   
+   
+   //Base sur le TIC TAC TOE
+   
    P4cmr p4Game;
    p4Game.reset();
    Player currentPlayer = Player::O;
@@ -109,8 +112,8 @@ int main()
       if (human[(currentPlayer + 1) / 2])
           nextMove = interactive(currentPlayer, p4Game);
       else {
-          nextMove = p4Game.chooseNextMove(currentPlayer, 2);
-          cout << endl << "AI joue " << nextMove << endl;
+          nextMove = p4Game.chooseNextMove(currentPlayer, 5);
+          cout << endl << "AI joue " << nextMove + 1 << endl;
       }
       p4Game.playInColumn(nextMove, currentPlayer);
       
@@ -127,6 +130,8 @@ int main()
    {
       cout << " \n\n Egalité! \n\n\n";
    }
+   
+   system("PAUSE");
 
    return EXIT_SUCCESS;
 

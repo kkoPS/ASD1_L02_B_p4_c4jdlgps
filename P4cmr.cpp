@@ -5,6 +5,9 @@
  * Created on 15. mars 2016, 11:29
  */
 
+#include <limits>
+#include <algorithm>
+
 #include "P4cmr.h"
 
 using namespace std;
@@ -194,6 +197,8 @@ bool P4cmr::isValidMove(size_t c) const
    return m_board[c][m_rows - 1] == Player::EMPTY; 
 }
 
+#include <iostream>
+
 /**
  *  @brief Choisit la prochain mouvement pour le joueur p
  *
@@ -206,16 +211,118 @@ bool P4cmr::isValidMove(size_t c) const
  *          choix de l'algorithme minimax
  */
 size_t P4cmr::chooseNextMove(Player p, unsigned depth)
-{
-   unsigned x = rand() % 7;
-   while(!isValidMove(x))
-   {
-      x = rand() % 7;
-   }
+{  
+   int bestScore = numeric_limits<int>::min();
+   size_t columnSelected = 0;
+   
+   //Explore en permutant gauche-droite
+   for(double i = 0; i <= m_cols /2; i += 0.5)
+   {      
+      int col = m_cols / 2;
+      if((double)ceil(i) == i)
+      {
+         col += i;
+      }
+      else
+      {
+         col -= i;
+      }
       
-   return x;
+      if(isValidMove(col))
+      {
+         int score = calculScore(col, (Player)p, depth);
+
+         if(score > bestScore)
+         {
+            bestScore = score;
+            columnSelected = col;
+         }
+      }
+   }
+   
+   return columnSelected;
+   
 }
 
+bool P4cmr::isBoardFull()
+{
+   for(size_t col = 0; col < m_cols; col++)
+   {
+      if(isValidMove(col))
+      {
+         return false;
+      }
+   }
+   return true;
+}
+
+int P4cmr::calculScore(size_t col, Player p, size_t depth)
+{   
+   playInColumn(col, p);
+   
+   int score;
+   
+   if(isWinner(p))
+   {
+      score = numeric_limits<int>::max();
+   }
+   else if(depth == 0 || isBoardFull())
+   {
+      score = evalBoard(p);
+   }
+   else
+   {
+      int bestScore = numeric_limits<int>::min();
+      for(int col = 0; col < m_cols; col++)
+      {
+         if(isValidMove(col))
+         {
+            int opponentScore = calculScore(col, (Player)-p, depth - 1);
+
+            if(opponentScore > bestScore)
+            {
+               bestScore = opponentScore;
+            }
+         }
+      }
+      score = -bestScore;      
+   }
+   
+   unplayInColumn(col);
+   
+   return score;
+   
+}
+
+
+int P4cmr::evalBoard(Player p)
+{
+   if(isWinner(p))
+   {
+      return numeric_limits<int>::max();
+   }
+   else if(isWinner((Player)-p))
+   {
+      return numeric_limits<int>::min();
+   }
+   else
+   {
+      return 0;
+   }
+}
+
+void P4cmr::unplayInColumn(size_t c)
+{
+   for(long int r = m_rows; r >= 0 ; r--)
+   {
+      //A revoir, TOUT N'EST PAS REMPLIS A 0 PAR DEFAUT
+      if(m_board[c][r] == O || m_board[c][r] == X)
+      {
+         m_board[c][r] = Player::EMPTY;
+         break;
+      }
+   }
+}
 /**
  *  @brief Renvoie le nom de votre classe pour le tournoi
  *

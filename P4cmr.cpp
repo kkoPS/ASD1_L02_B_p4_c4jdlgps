@@ -5,8 +5,6 @@
  * Created on 15. mars 2016, 11:29
  */
 
-//YOYO
-//YOLO
 
 #include <limits>
 #include <algorithm>

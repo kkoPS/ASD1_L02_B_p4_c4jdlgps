@@ -304,7 +304,6 @@ int P4cmr::evalBoard(Player p)
    }
    else
    {
-      return 0;
       // plusse le joueur a de triplets, plusse la board a de points.
       unsigned triplets = 0;
       

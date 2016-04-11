@@ -331,12 +331,10 @@ std::string P4cmr::getName() const
 
 void P4cmr::printBoard(std::ostream& flow) const
 {
-   string ligne = string( m_cols * 2, '_');
    
    //Affichage de la grille
    for(int i = m_rows -1  ; i >= 0 ; i--)
    {
-      //flow << ligne << endl;
       for(unsigned j = 0 ; j < m_cols ; j++)
       {
          flow << "|";

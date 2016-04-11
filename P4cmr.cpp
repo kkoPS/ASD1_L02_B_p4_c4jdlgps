@@ -5,7 +5,7 @@
  * Created on 15. mars 2016, 11:29
  */
 
-//YO
+//YOLO
 
 #include <limits>
 #include <algorithm>

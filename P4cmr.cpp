@@ -207,11 +207,12 @@ bool P4cmr::isValidMove(size_t c) const
 size_t P4cmr::chooseNextMove(Player p, unsigned depth)
 {  
    cout << " " ;
-   int bestScore = -numeric_limits<int>::max();
+   int bestScore = numeric_limits<int>::min();
    size_t columnSelected = 0;
    
    //Explore en permutant gauche-droite
    for(double i = 0; i <= m_cols /2; i += 0.5)
+   //for(size_t col = 0; col < m_cols; col++)
    {      
       int col = m_cols / 2;
       if((double)ceil(i) == i)
@@ -408,15 +409,6 @@ int P4cmr::evalBoard(Player p)
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
       return 0;
    }
 }
@@ -493,9 +485,10 @@ int P4cmr::alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t dept
    // cout << " alpha : " << alpha << ", beta : " << beta;
    //playInColumn(col, p);
 
-   if (depth == 0 or isBoardFull() or isWinner(p)) {
+   if (depth == 0 || isBoardFull() || isWinner(p)) {
       return -evalBoard(p);
    }
+   
    playInColumn(col, p);
 
 
@@ -514,11 +507,14 @@ int P4cmr::alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t dept
    {
     */
    int bestScore = -numeric_limits<int>::max();
-   for (int col = 0; col < m_cols; col++) {
-      if (isValidMove(col)) {
+   for (size_t col = 0; col < m_cols; col++) 
+   {
+      if (isValidMove(col)) 
+      {
          int scoreNextMove = -alphaBetaScore(col, (Player) - p, -beta, -alpha, depth - 1);
 
-         if (scoreNextMove > bestScore) {
+         if (scoreNextMove > bestScore) 
+         {
             bestScore = scoreNextMove;
          }
 
@@ -530,8 +526,9 @@ int P4cmr::alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t dept
          if (alpha >= beta) {
             break;
          }
+         
       }
-      //}
+      
 
    }
 
@@ -539,8 +536,6 @@ int P4cmr::alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t dept
 
    return bestScore;
 }
-
-
 
 
 

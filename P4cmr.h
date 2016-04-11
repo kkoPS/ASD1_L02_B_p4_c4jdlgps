@@ -100,8 +100,6 @@ public:
       
       int alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t depth);
       
-      
-      
 };
 
 /**

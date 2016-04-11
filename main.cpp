@@ -112,7 +112,7 @@ int main()
       if (human[(currentPlayer + 1) / 2])
           nextMove = interactive(currentPlayer, p4Game);
       else {
-          nextMove = p4Game.chooseNextMove(currentPlayer, 5);
+          nextMove = p4Game.chooseNextMove(currentPlayer, 7);
           cout << endl << "AI joue " << nextMove + 1 << endl;
       }
       p4Game.playInColumn(nextMove, currentPlayer);

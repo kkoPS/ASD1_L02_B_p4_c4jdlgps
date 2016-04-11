@@ -304,6 +304,7 @@ int P4cmr::evalBoard(Player p)
    else
    {
       return 0;
+      // plusse le joueur a de triplets, plusse la board a de points.
       unsigned triplets = 0;
       
       
@@ -311,113 +312,83 @@ int P4cmr::evalBoard(Player p)
       //Par direction---
    
    //--Horizontal Ouest à Est
-   for(unsigned r = 0; r < m_rows; r++)
+   for(unsigned r = 0; r < m_rows; r++) // toutes les lignes
    {
-      for(unsigned c = 0; c < m_cols - 3; c++)
+      for(unsigned c = 0; c < m_cols - 4; c++)  // colonnes indicées de 0 à 7-4 = 3 suffisent
       {
-         for(unsigned x = 0; x < 3; x++) //Il suffit de parcourir les 4 premieres cases
+         for(unsigned x = 0; x < 3; x++) //Il suffit de parcourir les 3 premieres cases à l'est
          {
             //Si c'est pas la couleur du Player, pas pris en compte
             if(m_board[c + x][r] != p) //La case n'est pas gagnante
             {
                break;
             }
-            triplets++; // aucun sauté, donc trois de suite alors on incrémente.
+            triplets++; // aucun sauté, donc trois de suite. alors on incrémente.
          }
       }
    } 
    
-   //--Vertical
-   for(unsigned r = 0; r < m_rows - 3; r++)
+   //--Vertical du sud au nord
+   for(unsigned r = 0; r < m_rows - 4; r++) // seulement les 4 lignes du bas indicées de 0 à 6-4 = 2
    {
-      for(unsigned c = 0; c < m_cols; c++)
+      for(unsigned c = 0; c < m_cols; c++) // toutes les colonnes
       {
-         bool isWinner;
-         //Si c'est pas la couleur du Player, pas pris en compte
-         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         
+         
+         for(unsigned x = 0; x < 3; x++) //Il suffit de parcourir les 3 premieres cases
          {
+            //Si c'est pas la couleur du Player, pas pris en compte
             if(m_board[c][r + x] != p) //La case n'est pas gagnante
             {
-               isWinner = false;
                break;
             }
+            // sinon on incrémente
+            triplets++;
          }
-         if(isWinner)
-         {
-            return true; //Aucune case sauté -> toute les cases au joueur
-         }
+         
       }
    }
    
    
 
-   //Diagonale NE
-   for(unsigned r = 0; r < m_rows - 3; r++)
+   //Diagonale SO à NE
+   for(unsigned r = 0; r < m_rows - 4; r++)  // lignes indicées de 0 à 2 = 6-4
    {
-      for(unsigned c = 0; c < m_cols - 3; c++)
+      for(unsigned c = 0; c < m_cols - 4; c++) // lignes indicées de 0 à 3 = 7-4
       {
-         bool isWinner = true;
-         //Si c'est pas la couleur du Player, pas pris en compte
-         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         for(unsigned x = 0; x < 3; x++) //Il suffit de parcourir les 4 premieres cases
          {
+            //Si c'est pas la couleur du Player, pas pris en compte
             if(m_board[c + x][r + x] != p) //La case n'est pas gagnante
             {
-               isWinner = false;
                //cout << "ON break en " << c << ", " << r << +"("+ x+")";
                break;
             }
          }
-         if(isWinner)
-         {
-            return true; //Aucune case sauté -> toute les cases au joueur
-         }
+         triplets++;
       }
    }
    
    
-   //Diagonale NO
-   for(unsigned r = 0; r < m_rows - 3; r++)
+   //Diagonale SE à NO
+   for(unsigned r = 0; r < m_rows - 4 ; r++) // lignes indicées de 0 à 2 = 6-4
    {
-      for(unsigned c = 3; c < m_cols; c++)
+      for(unsigned c = 3; c < m_cols; c++) // colonnes indicées de 3 = 7-4 à 6<m_cols
       {
-         bool isWinner = true;
-         //Si c'est pas la couleur du Player, pas pris en compte
-         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         
+         for(unsigned x = 0; x < 3; x++) //Il suffit de parcourir les 4 premieres cases
          {
+            //Si c'est pas la couleur du Player, pas pris en compte
             if(m_board[c - x][r + x] != p) //La case n'est pas gagnante
             {
-               isWinner = false;
                break;
             }
          }
-         if(isWinner)
-         {
-            return true; //Aucune case sauté -> toute les cases au joueur
-         }
+         triplets++;
       }
    }
    
-   return false;
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      return 0;
+   return triplets;
    }
 }
 

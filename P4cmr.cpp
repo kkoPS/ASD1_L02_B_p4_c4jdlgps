@@ -22,7 +22,7 @@ std::ostream& operator << ( std::ostream&, const P4cmr& );
  *  @brief Constructeur par defaut
  */
 P4cmr::P4cmr()
-: m_rows(6), m_cols(7), m_name("BRO4")
+: m_rows(6), m_cols(7), m_name("BRO4CE")
 {
    m_board.resize(m_cols);
    for(unsigned i = 0; i < m_cols ; i ++)
@@ -206,7 +206,8 @@ bool P4cmr::isValidMove(size_t c) const
  */
 size_t P4cmr::chooseNextMove(Player p, unsigned depth)
 {  
-   int bestScore = numeric_limits<int>::min();
+   cout << " " ;
+   int bestScore = -numeric_limits<int>::max();
    size_t columnSelected = 0;
    
    //Explore en permutant gauche-droite
@@ -215,22 +216,24 @@ size_t P4cmr::chooseNextMove(Player p, unsigned depth)
       int col = m_cols / 2;
       if((double)ceil(i) == i)
       {
-         col += i;
+         col += ceil(i);
       }
       else
       {
-         col -= i;
+         col -= ceil(i);
       }
       
       if(isValidMove(col))
       {
-         int score = calculScore(col, (Player)p, depth);
-
+         int score = -alphaBetaScore(col, (Player)p, -numeric_limits<int>::max(), numeric_limits<int>::max(), depth);
+         
          if(score > bestScore)
          {
             bestScore = score;
             columnSelected = col;
          }
+         cout << "score : " << score ;
+         
       }
    }
    
@@ -265,7 +268,7 @@ int P4cmr::calculScore(size_t col, Player p, size_t depth)
    }
    else
    {
-      int bestScore = numeric_limits<int>::min();
+      int bestScore = -numeric_limits<int>::max();
       for(int col = 0; col < m_cols; col++)
       {
          if(isValidMove(col))
@@ -289,16 +292,131 @@ int P4cmr::calculScore(size_t col, Player p, size_t depth)
 
 int P4cmr::evalBoard(Player p)
 {
+   
    if(isWinner(p))
    {
       return numeric_limits<int>::max();
    }
    else if(isWinner((Player)-p))
    {
-      return numeric_limits<int>::min();
+      return -numeric_limits<int>::max();
    }
    else
    {
+      return 0;
+      unsigned triplets = 0;
+      
+      
+      
+      //Par direction---
+   
+   //--Horizontal Ouest à Est
+   for(unsigned r = 0; r < m_rows; r++)
+   {
+      for(unsigned c = 0; c < m_cols - 3; c++)
+      {
+         for(unsigned x = 0; x < 3; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            //Si c'est pas la couleur du Player, pas pris en compte
+            if(m_board[c + x][r] != p) //La case n'est pas gagnante
+            {
+               break;
+            }
+            triplets++; // aucun sauté, donc trois de suite alors on incrémente.
+         }
+      }
+   } 
+   
+   //--Vertical
+   for(unsigned r = 0; r < m_rows - 3; r++)
+   {
+      for(unsigned c = 0; c < m_cols; c++)
+      {
+         bool isWinner;
+         //Si c'est pas la couleur du Player, pas pris en compte
+         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            if(m_board[c][r + x] != p) //La case n'est pas gagnante
+            {
+               isWinner = false;
+               break;
+            }
+         }
+         if(isWinner)
+         {
+            return true; //Aucune case sauté -> toute les cases au joueur
+         }
+      }
+   }
+   
+   
+
+   //Diagonale NE
+   for(unsigned r = 0; r < m_rows - 3; r++)
+   {
+      for(unsigned c = 0; c < m_cols - 3; c++)
+      {
+         bool isWinner = true;
+         //Si c'est pas la couleur du Player, pas pris en compte
+         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            if(m_board[c + x][r + x] != p) //La case n'est pas gagnante
+            {
+               isWinner = false;
+               //cout << "ON break en " << c << ", " << r << +"("+ x+")";
+               break;
+            }
+         }
+         if(isWinner)
+         {
+            return true; //Aucune case sauté -> toute les cases au joueur
+         }
+      }
+   }
+   
+   
+   //Diagonale NO
+   for(unsigned r = 0; r < m_rows - 3; r++)
+   {
+      for(unsigned c = 3; c < m_cols; c++)
+      {
+         bool isWinner = true;
+         //Si c'est pas la couleur du Player, pas pris en compte
+         for(unsigned x = 0; x < 4; x++) //Il suffit de parcourir les 4 premieres cases
+         {
+            if(m_board[c - x][r + x] != p) //La case n'est pas gagnante
+            {
+               isWinner = false;
+               break;
+            }
+         }
+         if(isWinner)
+         {
+            return true; //Aucune case sauté -> toute les cases au joueur
+         }
+      }
+   }
+   
+   return false;
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       return 0;
    }
 }
@@ -323,8 +441,7 @@ void P4cmr::unplayInColumn(size_t c)
  */
 std::string P4cmr::getName() const
 {
-   string truncated = m_name.substr(5);
-   return truncated;
+   return m_name;
 }
 
 
@@ -370,6 +487,64 @@ void P4cmr::play(size_t c, size_t r, const Player& p)
 {
    this->m_board[c][r] = p;
 }
+
+int P4cmr::alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t depth) {
+
+   // cout << " alpha : " << alpha << ", beta : " << beta;
+   //playInColumn(col, p);
+
+   if (depth == 0 or isBoardFull() or isWinner(p)) {
+      return -evalBoard(p);
+   }
+   playInColumn(col, p);
+
+
+   /*
+   int score;
+   
+   if(isWinner(p))
+   {
+      score = numeric_limits<int>::max();
+   }
+   else if(depth == 0 || isBoardFull())
+   {
+      score = -evalBoard(p);
+   }
+   else
+   {
+    */
+   int bestScore = -numeric_limits<int>::max();
+   for (int col = 0; col < m_cols; col++) {
+      if (isValidMove(col)) {
+         int scoreNextMove = -alphaBetaScore(col, (Player) - p, -beta, -alpha, depth - 1);
+
+         if (scoreNextMove > bestScore) {
+            bestScore = scoreNextMove;
+         }
+
+         if (alpha < scoreNextMove) {
+            alpha = scoreNextMove;
+         }
+
+         // élagage
+         if (alpha >= beta) {
+            break;
+         }
+      }
+      //}
+
+   }
+
+   unplayInColumn(col);
+
+   return bestScore;
+}
+
+
+
+
+
+
 
 
 

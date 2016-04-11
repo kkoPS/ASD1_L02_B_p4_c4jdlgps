@@ -2,7 +2,7 @@
 #define P4CMR_h
 
 #include "P4Interface.h"
-#include <ostream>
+#include <iostream>
 #include <vector>
 
 
@@ -97,6 +97,11 @@ public:
       int calculScore(size_t col, Player p, size_t depth);
       bool isBoardFull();
       void unplayInColumn(size_t c);
+      
+      int alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t depth);
+      
+      
+      
 };
 
 /**

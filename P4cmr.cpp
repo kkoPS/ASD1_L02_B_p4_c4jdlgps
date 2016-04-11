@@ -233,7 +233,7 @@ size_t P4cmr::chooseNextMove(Player p, unsigned depth)
             bestScore = score;
             columnSelected = col;
          }
-         cout << "score : " << score ;
+         cout << "(" << col+1 << "): " << score << " " ;
          
       }
    }
@@ -471,20 +471,6 @@ int P4cmr::alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t dept
    playInColumn(col, p);
 
 
-   /*
-   int score;
-   
-   if(isWinner(p))
-   {
-      score = numeric_limits<int>::max();
-   }
-   else if(depth == 0 || isBoardFull())
-   {
-      score = -evalBoard(p);
-   }
-   else
-   {
-    */
    int bestScore = -numeric_limits<int>::max();
    for (size_t col = 0; col < m_cols; col++) 
    {

@@ -212,7 +212,6 @@ size_t P4cmr::chooseNextMove(Player p, unsigned depth)
    
    //Explore en permutant gauche-droite
    for(double i = 0; i <= m_cols /2; i += 0.5)
-   //for(size_t col = 0; col < m_cols; col++)
    {      
       int col = m_cols / 2;
       if((double)ceil(i) == i)
@@ -227,6 +226,8 @@ size_t P4cmr::chooseNextMove(Player p, unsigned depth)
       if(isValidMove(col))
       {
          int score = -alphaBetaScore(col, (Player)p, -numeric_limits<int>::max(), numeric_limits<int>::max(), depth);
+         
+         cout << "score : " << score ;
          
          if(score > bestScore)
          {
@@ -462,44 +463,62 @@ void P4cmr::play(size_t c, size_t r, const Player& p)
 int P4cmr::alphaBetaScore(size_t col, Player p, int alpha, int beta, size_t depth) {
 
    // cout << " alpha : " << alpha << ", beta : " << beta;
-   //playInColumn(col, p);
+   playInColumn(col, p);
+   int score;
 
    if (depth == 0 || isBoardFull() || isWinner(p)) {
-      return -evalBoard(p);
+      score = -evalBoard(p);
    }
-   
-   playInColumn(col, p);
-
-
-   int bestScore = -numeric_limits<int>::max();
-   for (size_t col = 0; col < m_cols; col++) 
+   else
    {
-      if (isValidMove(col)) 
+
+      //playInColumn(col, p);
+
+
+      /*
+      int score;
+
+      if(isWinner(p))
       {
-         int scoreNextMove = -alphaBetaScore(col, (Player) - p, -beta, -alpha, depth - 1);
-
-         if (scoreNextMove > bestScore) 
-         {
-            bestScore = scoreNextMove;
-         }
-
-         if (alpha < scoreNextMove) {
-            alpha = scoreNextMove;
-         }
-
-         // élagage
-         if (alpha >= beta) {
-            break;
-         }
-         
+         score = numeric_limits<int>::max();
       }
-      
+      else if(depth == 0 || isBoardFull())
+      {
+         score = -evalBoard(p);
+      }
+      else
+      {
+       */
+      int bestScore = -numeric_limits<int>::max();
+      for (size_t col = 0; col < m_cols; col++) 
+      {
+         if (isValidMove(col)) 
+         {
+            int scoreNextMove = -alphaBetaScore(col, (Player) - p, -beta, -alpha, depth - 1);
 
+            if (scoreNextMove > bestScore) 
+            {
+               bestScore = scoreNextMove;
+            }
+
+            if (alpha < scoreNextMove) {
+               alpha = scoreNextMove;
+            }
+
+            // élagage
+            if (alpha >= beta) {
+               break;
+            }
+
+         }
+      }
+      score = bestScore;
+      
    }
 
    unplayInColumn(col);
 
-   return bestScore;
+   return score;
 }
 
 
